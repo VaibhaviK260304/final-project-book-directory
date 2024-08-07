@@ -8,6 +8,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+import { postSignup, postLogin } from './contollers/user.js';
+import { postbook, getbooks, deletebook } from './contollers/transaction.js';
+
 //Connect to mogoDB
 const connectDB = async () => {
     const connect = await mongoose.connect(process.env.MONGO_URI,)
@@ -19,10 +22,20 @@ connectDB();
 
 app.get('/', (req, res)=>{
     res.json({
-        message: 'Welcome to book directory'
+        message: 'Welcome to expense tracker'
     })
 })
 
+//API for Sign Up
+app.post('/signup', postSignup )
+
+//API for Log In
+app.post('/login', postLogin)
+
+//API to add books 
+app.post('/book', postbook)
+app.get('/books', getbooks)
+app.delete('/book/:id', deletebook)
 
 const PORT = process.env.PPRT || 5000;
 
